@@ -4,7 +4,11 @@
   "description": "Mix api is a wrapper of the web3 api for high level interaction with Ethereum based blockchains",
   "main": "index.js",
   "scripts": {
-    "test": "mocha --reporter spec"
+    "test": "mocha --reporter spec",
+    "prepublish": "babel src --out-dir dist"
+  },
+  "babel": {
+    "presets": ["env"]
   },
   "repository": {
     "type": "git",
