@@ -1,6 +1,6 @@
 
-var LinkClient = require('./dist/LinkClient');
+var client = require('./dist/LinkClient');
 
 module.exports = {
-    LinkClient : LinkClient.default
+    LinkClient : client.default
 };
