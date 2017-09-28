@@ -1,16 +1,16 @@
 
-// LinkConnector - A library to connect to an Ethereum based block chain.
+// MixConnector - A library to connect to an Ethereum based block chain.
 // Currently the connection is to a node specified by IP - connection methods will be added in the future
 // hence the abstract base class.
 
 const web3 = require('web3');
 
 // Abstract base class to allow for different connection methods
-class LinkConnectorBase{
+class MixConnectorBase{
 
     constructor() {
 
-        if (new.target === 'LinkConnectorBase') {
+        if (new.target === 'MixConnectorBase') {
             throw new TypeError("Cannot construct Abstract instances directly");
         }
 
@@ -21,7 +21,7 @@ class LinkConnectorBase{
     }
 }
 
-export default class LinkHTTPConnector extends LinkConnectorBase{
+export default class MixHTTPConnector extends MixConnectorBase{
 
     constructor(){
         super();

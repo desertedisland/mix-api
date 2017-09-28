@@ -1,6 +1,6 @@
 
-var client = require('./dist/LinkClient');
+var client = require('./dist/MixClient');
 
 module.exports = {
-    LinkClient : client.default
+    MixClient : client.default
 };

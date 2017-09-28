@@ -1,11 +1,11 @@
 // Core library for interactions with Ethereum blockchains
 
-import LinkHTTPConnector from './LinkConnector.js';
-import LinkSystemStats from './LinkSystemStats.js';
-import LinkSearch from './LinkSearch.js';
+import MixHTTPConnector from './MixConnector.js';
+import MixSystemStats from './MixSystemStats.js';
+import MixSearch from './MixSearch.js';
 
 
-export default class LinkClient {
+export default class MixClient {
 
     // Connect to a network via Metamask (https://metamask.io/) or explicit URI stored in localstorage.
     // Explicit URI overrides Metamask.
@@ -18,7 +18,7 @@ export default class LinkClient {
 
         if (nodeUri) {
 
-            this._web3 = LinkHTTPConnector.connect(nodeUri);
+            this._web3 = MixHTTPConnector.connect(nodeUri);
 
         // No direct connection specified. Try metamask.
         }else if( typeof web3 !== 'undefined'){
@@ -31,8 +31,8 @@ export default class LinkClient {
             throw new Error('Not connected to network');
         }
 
-        this._systemStats = new LinkSystemStats(this._web3);
-        this._linkSearch = new LinkSearch(this._web3);
+        this._systemStats = new MixSystemStats(this._web3);
+        this._linkSearch = new MixSearch(this._web3);
 
 
     }

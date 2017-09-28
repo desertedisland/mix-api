@@ -1,6 +1,6 @@
 
 
-export default class LinkSystemStats{
+export default class MixSystemStats{
 
     constructor(web3){
 

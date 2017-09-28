@@ -1,7 +1,7 @@
 
 // Search functions for the block chain
 
-export default class LinkSearch{
+export default class MixSearch{
 
     constructor(web3){
 
