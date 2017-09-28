@@ -14,7 +14,7 @@ export default class MixClient {
         this._web3 = null;
 
         // If a node URI has been specified, it will be stored in localstorage
-        const nodeUri = nodeURI || localStorage.getItem('link-node-uri');
+        const nodeUri = nodeURI || localStorage.getItem('mix-node-uri');
 
         if (nodeUri) {
 
@@ -32,7 +32,7 @@ export default class MixClient {
         }
 
         this._systemStats = new MixSystemStats(this._web3);
-        this._linkSearch = new MixSearch(this._web3);
+        this._mixSearch = new MixSearch(this._web3);
 
 
     }
@@ -64,9 +64,9 @@ export default class MixClient {
     doSearch(query){
 
         const promises = [
-            this._linkSearch.getBlock(query),
-            this._linkSearch.getBalance(query),
-            this._linkSearch.getTransaction(query)
+            this._mixSearch.getBlock(query),
+            this._mixSearch.getBalance(query),
+            this._mixSearch.getTransaction(query)
         ];
 
         return new Promise(
@@ -196,21 +196,21 @@ export default class MixClient {
     getBlock(hashOrNumber){
 
         // Returns promise
-        return this._linkSearch.getBlock(hashOrNumber);
+        return this._mixSearch.getBlock(hashOrNumber);
 
     }
 
     getTransaction(transactionHash){
 
         // Returns promise
-        return this._linkSearch.getTransaction(transactionHash);
+        return this._mixSearch.getTransaction(transactionHash);
 
     }
 
     getAccountBalance(accountHash){
 
         // Returns promise
-        return this._linkSearch.getBalance(accountHash);
+        return this._mixSearch.getBalance(accountHash);
 
     }
 
