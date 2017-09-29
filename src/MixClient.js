@@ -8,41 +8,49 @@ import MixSearch from './MixSearch.js';
  * Provide high level functionality for MIX blockchain interfaces
  *
  * @class
- * 
+ *
  */
 export default class MixClient {
 
     /**
      * Connect to a network via:
-     *  - Metamask (https://metamask.io/)
+     *  - web3 object supplied as param
      *  - Explicit URI supplied as param
      *  - Explicit URI stored in localstorage.
-     *
+     *  - Metamask (https://metamask.io/)
      *
      * Explicit URI overrides Metamask
      *
      * @constructor
      * @param {String}[nodeURI = null] nodeURI
+     * @param {Object}[web3 = null] web3
+     *
+     * @throws{Error} if connection is not made
      *
      */
-    constructor(nodeURI = null) {
+    constructor(nodeURI = null, web3 = null) {
 
-        this._web3 = null;
+        // If a web3 object has been supplied as a param, use that over other methods.
+        this._web3 = web3;
 
-        // Node URI may have been stored in local storage by the settings page.
+        // Node URI may have been stored in local storage.
         const nodeUri = nodeURI || localStorage.getItem('mix-node-uri');
 
-        if (nodeUri) {
+        if (nodeUri && !this._web3) {
 
             this._web3 = MixHTTPConnector.connect(nodeUri);
 
+
+        }
+
         // No direct connection specified. Try metamask.
-        }else if( typeof web3 !== 'undefined'){
+        if(!this._web3 && (typeof web3 !== 'undefined')){
 
             this._web3 = web3;
 
         }
 
+        // Test connection
         if(!this._web3 || !this._web3.isConnected()){
             throw new Error('Not connected to network');
         }

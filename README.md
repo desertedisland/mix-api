@@ -20,6 +20,5 @@ index.js file.
 To speed development the mix api unit tests use a node module that mocks a connected we3 object. This is a separate project that can be
 found at [https://github.com/link-blockchain/web3-mock](https://github.com/link-blockchain/web3-mock).
 
-### API reference
 
 
