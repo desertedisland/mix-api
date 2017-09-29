@@ -7,13 +7,19 @@ import MixSearch from './MixSearch.js';
 
 export default class MixClient {
 
-    // Connect to a network via Metamask (https://metamask.io/) or explicit URI stored in localstorage.
-    // Explicit URI overrides Metamask.
+    /**
+     * Connect to a network via Metamask (https://metamask.io/) or explicit URI stored in localstorage.
+     * Explicit URI overrides Metamask
+     *
+     * @constructor
+     * @param nodeURI
+     *
+     */
     constructor(nodeURI = null) {
 
         this._web3 = null;
 
-        // If a node URI has been specified, it will be stored in localstorage
+        // Node URI may have been stored in local storage by the settings page.
         const nodeUri = nodeURI || localStorage.getItem('mix-node-uri');
 
         if (nodeUri) {
@@ -34,14 +40,18 @@ export default class MixClient {
         this._systemStats = new MixSystemStats(this._web3);
         this._mixSearch = new MixSearch(this._web3);
 
-
     }
 
-    // Watch the network for new blocks
+    /**
+     * Watch the network for new blocks
+     *
+     * @param {function} callback
+     * @param {function} errorCallback
+     * @returns {Object} filter
+     */
     watchNetwork(callback, errorCallback){
 
-        const filter = this._web3.eth.filter('latest'),
-            that = this;
+        const filter = this._web3.eth.filter('latest');
 
         filter.watch(function(error, result){
 
@@ -57,10 +67,16 @@ export default class MixClient {
 
     }
 
-    // Take a hash or number and search for:
-    // - An account balance
-    // - A transaction
-    // - A block
+    /**
+     *  Take a hash or number and search for:
+     * - An account balance
+     * - A transaction
+     * - A block
+     *
+     * @param query
+     * @returns {Promise}
+     *
+     */
     doSearch(query){
 
         const promises = [
@@ -98,10 +114,16 @@ export default class MixClient {
 
     }
 
-    // Numerous asynchronous calls to various APIs. getLatestBlocks will initially
-    // make an asynchronous call to retrieve each individual block (I'm not aware of any other way
-    // of doing that with the web3 api). You can avoid that if you supply an existing list of
-    // latestBlocks via the param.
+    /**
+     * Numerous asynchronous calls to various APIs to retrieve system stats based on the last ten blocks
+     * of the blockchain. getLatestBlocks will initially make an asynchronous call to retrieve each
+     * individual block (I'm not aware of any other way of doing that with the web3 api). You can avoid that
+     * if you supply an existing list of latestBlocks via the param.
+     *
+     * @param {Array} [latestBlocks = null] - a prepopulated list of blocks
+     * @returns {Promise}
+     *
+     */
     getSystemStats(latestBlocks = null) {
 
         // Must get system state before everything else.
@@ -155,8 +177,12 @@ export default class MixClient {
         )
     }
 
-    // Add a new block to the latestBlocks list and update the stats
-    // Update the block list and stats with a new block
+    /**
+     * Add a new block to the latestBlocks list and update the system stats
+     *
+     * @param {Array} latestBlocks - a list of Ethereum blocks
+     * @returns {Promise}
+     */
     updateBlocks(latestBlocks){
 
         this._systemStats.setLatestBlocks(latestBlocks);
@@ -188,11 +214,14 @@ export default class MixClient {
             }
         );
 
-
-
-
     }
 
+    /**
+     * Return an Ethereum block based on block hash or number
+     *
+     * @param {String} hashOrNumber
+     * @returns {Promise}
+     */
     getBlock(hashOrNumber){
 
         // Returns promise
@@ -200,6 +229,12 @@ export default class MixClient {
 
     }
 
+    /**
+     * Retrieve a transaction by transaction hash
+     *
+     * @param {String} transactionHash
+     * @returns {Promise}
+     */
     getTransaction(transactionHash){
 
         // Returns promise
@@ -207,6 +242,12 @@ export default class MixClient {
 
     }
 
+    /**
+     * Retrieve the balance for an account at accountHash
+     *
+     * @param {String} accountHash
+     * @returns {Promise}
+     */
     getAccountBalance(accountHash){
 
         // Returns promise
