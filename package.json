@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha test",
-    "prepublish": "babel src --out-dir dist"
+    "babel": "babel src --out-dir dist",
+    "babel-watch": "babel --watch src --out-dir dist"
   },
   "babel": {
     "presets": [

@@ -22,41 +22,54 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+/**
+ * Provide high level functionality for MIX blockchain interfaces
+ *
+ * @class
+ *
+ */
 var MixClient = function () {
 
     /**
      * Connect to a network via:
-     *  - Metamask (https://metamask.io/)
+     *  - web3 object supplied as param
      *  - Explicit URI supplied as param
      *  - Explicit URI stored in localstorage.
-     *
+     *  - Metamask (https://metamask.io/)
      *
      * Explicit URI overrides Metamask
      *
      * @constructor
      * @param {String}[nodeURI = null] nodeURI
+     * @param {Object}[web3 = null] web3
+     *
+     * @throws{Error} if connection is not made
      *
      */
     function MixClient() {
         var nodeURI = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+        var web3 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
 
         _classCallCheck(this, MixClient);
 
-        this._web3 = null;
+        // If a web3 object has been supplied as a param, use that over other methods.
+        this._web3 = web3;
 
-        // Node URI may have been stored in local storage by the settings page.
+        // Node URI may have been stored in local storage.
         var nodeUri = nodeURI || localStorage.getItem('mix-node-uri');
 
-        if (nodeUri) {
+        if (nodeUri && !this._web3) {
 
             this._web3 = _MixConnector2.default.connect(nodeUri);
+        }
 
-            // No direct connection specified. Try metamask.
-        } else if (typeof web3 !== 'undefined') {
+        // No direct connection specified. Try metamask.
+        if (!this._web3 && typeof web3 !== 'undefined') {
 
             this._web3 = web3;
         }
 
+        // Test connection
         if (!this._web3 || !this._web3.isConnected()) {
             throw new Error('Not connected to network');
         }

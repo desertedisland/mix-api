@@ -12,7 +12,8 @@ index.js file.
 
 ### npm commands
 
-- `npm run prepublish` - Transpile libraries with Babel
+- `npm run babel` - Transpile libraries (once) with Babel
+- `npm run babel-watch` - Transpile libraries with Babel every time a source file is changed
 - `npm test` - Unit tests
 
 ### testing / development
