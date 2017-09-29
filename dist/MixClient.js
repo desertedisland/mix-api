@@ -48,22 +48,34 @@ var MixClient = function () {
      */
     function MixClient() {
         var nodeURI = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
-        var web3 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+        var web3Object = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
 
         _classCallCheck(this, MixClient);
 
         // If a web3 object has been supplied as a param, use that over other methods.
-        this._web3 = web3;
+        this._web3 = null;
 
-        // Node URI may have been stored in local storage.
-        var nodeUri = nodeURI || localStorage.getItem('mix-node-uri');
+        // First see if a node URI is supplied by param
+        var nodeUri = nodeURI || null;
 
+        // Next see if a node URI has been set in localStorage. (localStorage will be undefined in tests)
+        if (!nodeURI && typeof localStorage !== 'undefined') {
+
+            nodeURI = localStorage.getItem('mix-node-uri');
+        }
+
+        // If web3Object has been supplied, that takes precedence over everything else.
+        if (web3Object) {
+            this._web3 = web3Object;
+        }
+
+        // If nodeURI has been supplied, attempt to connect with that.
         if (nodeUri && !this._web3) {
 
             this._web3 = _MixConnector2.default.connect(nodeUri);
         }
 
-        // No direct connection specified. Try metamask.
+        // No other option specified. Use metamask.
         if (!this._web3 && typeof web3 !== 'undefined') {
 
             this._web3 = web3;

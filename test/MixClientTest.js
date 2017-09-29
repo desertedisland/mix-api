@@ -11,22 +11,21 @@
 
 var chai = require('chai'),
     expect = chai.expect,
-    Web3 = require('../lib/web3mock'),         // Use web3-mock for testing
-    mixClient = require('../dist/MixClient');
+    Web3 = require('./web3-mock'),         // Use web3-mock for testing
+    MixClient = require('../dist/MixClient').default;
 
 describe('Mix API',
     function(){
 
-        it('Should connect to a web3 object',
+        var mixClient = null,
+            web3 = new Web3('https://localhost:8545');
+
+        it('Should connect to a blockchain',
             function(){
 
-                expect(
-                    function(){
+                mixClient = new MixClient('', web3);
 
-                        Web3()
-
-                    }
-                ).to.throw();
+                let i = 0;
 
             }
         );

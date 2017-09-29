@@ -28,22 +28,34 @@ export default class MixClient {
      * @throws{Error} if connection is not made
      *
      */
-    constructor(nodeURI = null, web3 = null) {
+    constructor(nodeURI = null, web3Object = null) {
 
         // If a web3 object has been supplied as a param, use that over other methods.
-        this._web3 = web3;
+        this._web3 = null;
 
-        // Node URI may have been stored in local storage.
-        const nodeUri = nodeURI || localStorage.getItem('mix-node-uri');
+        // First see if a node URI is supplied by param
+        const nodeUri = nodeURI || null;
 
+        // Next see if a node URI has been set in localStorage. (localStorage will be undefined in tests)
+        if(!nodeURI && typeof localStorage !== 'undefined' ){
+
+            nodeURI = localStorage.getItem('mix-node-uri');
+
+        }
+
+        // If web3Object has been supplied, that takes precedence over everything else.
+        if(web3Object){
+            this._web3 = web3Object;
+        }
+
+        // If nodeURI has been supplied, attempt to connect with that.
         if (nodeUri && !this._web3) {
 
             this._web3 = MixHTTPConnector.connect(nodeUri);
 
-
         }
 
-        // No direct connection specified. Try metamask.
+        // No other option specified. Use metamask.
         if(!this._web3 && (typeof web3 !== 'undefined')){
 
             this._web3 = web3;
