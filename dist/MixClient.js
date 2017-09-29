@@ -91,15 +91,27 @@ var MixClient = function () {
     }
 
     /**
-     * Watch the network for new blocks
+     * Determine if the client is connected to an Ethereum provider
      *
-     * @param {function} callback
-     * @param {function} errorCallback
-     * @returns {Object} filter
+     * @returns {Boolean}
      */
 
-
     _createClass(MixClient, [{
+        key: 'isConnected',
+        value: function isConnected() {
+
+            return this._web3.isConnected();
+        }
+
+        /**
+         * Watch the network for new blocks
+         *
+         * @param {function} callback
+         * @param {function} errorCallback
+         * @returns {Object} filter
+         */
+
+    }, {
         key: 'watchNetwork',
         value: function watchNetwork(callback, errorCallback) {
 

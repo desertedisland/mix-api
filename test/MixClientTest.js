@@ -24,8 +24,7 @@ describe('Mix API',
             function(){
 
                 mixClient = new MixClient('', web3);
-
-                let i = 0;
+                expect(mixClient.isConnected()).to.equal(true);
 
             }
         );
