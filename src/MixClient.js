@@ -8,11 +8,16 @@ import MixSearch from './MixSearch.js';
 export default class MixClient {
 
     /**
-     * Connect to a network via Metamask (https://metamask.io/) or explicit URI stored in localstorage.
+     * Connect to a network via:
+     *  - Metamask (https://metamask.io/)
+     *  - Explicit URI supplied as param
+     *  - Explicit URI stored in localstorage.
+     *
+     *
      * Explicit URI overrides Metamask
      *
      * @constructor
-     * @param nodeURI
+     * @param {String}[nodeURI = null] nodeURI
      *
      */
     constructor(nodeURI = null) {
