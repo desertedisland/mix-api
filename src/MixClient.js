@@ -4,7 +4,12 @@ import MixHTTPConnector from './MixConnector.js';
 import MixSystemStats from './MixSystemStats.js';
 import MixSearch from './MixSearch.js';
 
-
+/**
+ * Provide high level functionality for MIX blockchain interfaces
+ *
+ * @class
+ * 
+ */
 export default class MixClient {
 
     /**
