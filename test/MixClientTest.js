@@ -72,7 +72,6 @@ describe('Mix API',
                 mixClient.getBlock(2742).then(
                     function(block){
 
-                        console.log(block);
                         expect(block.number).to.equal(2742);
 
                         done();
@@ -85,9 +84,21 @@ describe('Mix API',
                 )
 
             }
+        );
+
+        it('Should retrieve the latest blocks',
+            function(done){
+
+                mixClient.getBlocks().then(
+                    function(blocks){
+
+                        expect(blocks.length).to.equal(10);
+                        done();
+                    }
+                )
+
+            }
         )
-
-
 
 
 
