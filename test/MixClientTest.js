@@ -37,8 +37,6 @@ describe('Mix API',
                 mixClient.getSystemStats().then(
                     function(stats){
 
-                        console.log(stats);
-
                         expect(stats.state).to.equal('synchronised');
                         expect(stats.gasPrice).to.equal(10);
                         expect(stats.latestBlocks.length).to.equal(10);
@@ -50,7 +48,26 @@ describe('Mix API',
 
 
             }
+        );
+
+        it('Should retrieve a transaction',
+            function(done){
+
+                var transaction = '0xc977a829b78f0a7c039441465202fff990687f10e3dbef0987ed5ded9bc511f7';
+
+                mixClient.getTransaction(transaction).then(
+                    function(transaction){
+
+                        expect(transaction.to).to.equal('0xfa3caabc8eefec2b5e2895e5afbf79379e7268a7');
+                        done();
+                    }
+                )
+
+            }
         )
+
+
+
 
 
     }
