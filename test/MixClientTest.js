@@ -29,6 +29,14 @@ describe('Mix API',
             }
         );
 
+        it('Should have retrieved the network stats',
+            function(){
+
+                console.log(mixClient);
+
+            }
+        )
+
 
     }
 );
