@@ -30,9 +30,24 @@ describe('Mix API',
         );
 
         it('Should have retrieved the network stats',
-            function(){
+            function(done){
 
-                console.log(mixClient);
+                let stats = null;
+
+                mixClient.getSystemStats().then(
+                    function(stats){
+
+                        console.log(stats);
+
+                        expect(stats.state).to.equal('synchronised');
+                        expect(stats.gasPrice).to.equal(10);
+                        expect(stats.latestBlocks.length).to.equal(10);
+
+                        done();
+
+                    }
+                );
+
 
             }
         )

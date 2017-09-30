@@ -93,9 +93,11 @@ var MixSystemStats = function () {
                 Promise.all(promises).then(function (latestBlocks) {
 
                     resolve(latestBlocks);
+
                 }).catch(function (error) {
 
                     reject(error);
+
                 });
             });
         }
