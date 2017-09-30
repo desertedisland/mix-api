@@ -63,7 +63,7 @@ var MixSystemStats = function () {
 
             return new Promise(function (resolve, reject) {
 
-                _this2._web3.eth.getBlock(blockID, function (error, block) {
+                _this2._web3.eth.getBlock(blockID, false, function (error, block) {
 
                     if (error) return reject(error);
 
@@ -93,11 +93,9 @@ var MixSystemStats = function () {
                 Promise.all(promises).then(function (latestBlocks) {
 
                     resolve(latestBlocks);
-
                 }).catch(function (error) {
 
                     reject(error);
-
                 });
             });
         }

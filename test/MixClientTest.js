@@ -64,6 +64,27 @@ describe('Mix API',
                 )
 
             }
+        );
+
+        it('Should retrieve a block',
+            function(done){
+
+                mixClient.getBlock(2742).then(
+                    function(block){
+
+                        console.log(block);
+                        expect(block.number).to.equal(2742);
+
+                        done();
+                    },
+                    function(error){
+                        console.error(error);
+
+                        done();
+                    }
+                )
+
+            }
         )
 
 

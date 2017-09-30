@@ -59,7 +59,7 @@ export default class MixSystemStats{
         return new Promise(
             (resolve, reject)=>{
 
-                this._web3.eth.getBlock(blockID,
+                this._web3.eth.getBlock(blockID, false,
                     (error, block)=>{
 
                         if(error) return reject(error);
