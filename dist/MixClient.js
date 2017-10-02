@@ -23,7 +23,11 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /**
- * Provide high level functionality for MIX blockchain interfaces
+ * Provide high level functionality for MIX blockchain interfaces.
+ *
+ * - Connection to a blockchain
+ * - Blockchain stats
+ * - Search
  *
  * @class
  *
@@ -130,7 +134,7 @@ var MixClient = function () {
         }
 
         /**
-         *  Take a hash or number and search for:
+         *  Take a hash, address or block number and search for:
          * - An account balance
          * - A transaction
          * - A block
@@ -233,6 +237,13 @@ var MixClient = function () {
             // Returns promise
             return this.getSystemStats(latestBlocks);
         }
+
+        /**
+         * Returns the last ten blocks of the blockchain
+         *
+         * @returns {Promise}
+         */
+
     }, {
         key: 'getBlocks',
         value: function getBlocks() {

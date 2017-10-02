@@ -11,7 +11,7 @@
 
 var chai = require('chai'),
     expect = chai.expect,
-    Web3 = require('./web3-mock'),         // Use web3-mock for testing
+    Web3 = require('web3-mock'),         // Use web3-mock for testing
     MixClient = require('../dist/MixClient').default;
 
 describe('Mix API',
