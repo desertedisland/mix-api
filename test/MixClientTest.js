@@ -2,7 +2,7 @@
 /*
     Unit tests for the MixClient API
 
-    - These tests use the transpiled files in the /dist folder
+    - *These tests use the transpiled files in the /dist folder*
         - You will need to run 'npm run prepublish' to transpile the files in the /src folder
           if you make any changes.
 

@@ -5,7 +5,11 @@ import MixSystemStats from './MixSystemStats.js';
 import MixSearch from './MixSearch.js';
 
 /**
- * Provide high level functionality for MIX blockchain interfaces
+ * Provide high level functionality for MIX blockchain interfaces.
+ *
+ * - Connection to a blockchain
+ * - Blockchain stats
+ * - Search
  *
  * @class
  *
@@ -111,7 +115,7 @@ export default class MixClient {
     }
 
     /**
-     *  Take a hash or number and search for:
+     *  Take a hash, address or block number and search for:
      * - An account balance
      * - A transaction
      * - A block
@@ -234,6 +238,12 @@ export default class MixClient {
         return this.getSystemStats(latestBlocks);
 
     }
+
+    /**
+     * Returns the last ten blocks of the blockchain
+     *
+     * @returns {Promise}
+     */
 
     getBlocks(){
 
