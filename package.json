@@ -8,11 +8,7 @@
     "babel": "babel src --out-dir dist",
     "babel-watch": "babel --watch src --out-dir dist"
   },
-  "babel": {
-    "presets": [
-      "env"
-    ]
-  },
+  "babel": {},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/mix-blockchain/mix-api.git"

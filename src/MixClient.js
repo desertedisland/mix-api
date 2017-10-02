@@ -53,9 +53,9 @@ export default class MixClient {
         }
 
         // If nodeURI has been supplied, attempt to connect with that.
-        if (nodeUri && !this._web3) {
+        if (nodeURI && !this._web3) {
 
-            this._web3 = MixHTTPConnector.connect(nodeUri);
+            this._web3 = MixHTTPConnector.connect(nodeURI);
 
         }
 
