@@ -1,8 +1,16 @@
+'use strict';
 
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
 
-export default class MixSystemStats {
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-    constructor(web3) {
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var MixSystemStats = function () {
+    function MixSystemStats(web3) {
+        _classCallCheck(this, MixSystemStats);
 
         this._web3 = web3;
     }
@@ -11,174 +19,205 @@ export default class MixSystemStats {
     // It is necessary to call this function before any of the others that require block calculations
     // as web3.eth.blockNumber (latest block) will be zero if the node is syncing (in that case use the
     // current block as the latest block).
-    getState() {
 
-        const that = this;
 
-        return new Promise((resolve, reject) => {
+    _createClass(MixSystemStats, [{
+        key: 'getState',
+        value: function getState() {
+            var _this = this;
 
-            that._web3.eth.getSyncing((error, result) => {
+            var that = this;
 
-                if (error) return reject(error);
+            return new Promise(function (resolve, reject) {
 
-                if (result) {
-                    // Still syncing
+                that._web3.eth.getSyncing(function (error, result) {
 
-                    this._syncing = true;
-                    this._latestBlockNumber = result.currentBlock;
+                    if (error) return reject(error);
 
-                    return resolve('synchronising');
-                }
+                    if (result) {
+                        // Still syncing
 
-                this._syncing = false;
+                        _this._syncing = true;
+                        _this._latestBlockNumber = result.currentBlock;
 
-                // Synchronised. Need to get the latest block number.
-                that._web3.eth.getBlockNumber((err, blockNumber) => {
+                        return resolve('synchronising');
+                    }
 
-                    if (err) return reject(err);
+                    _this._syncing = false;
 
-                    this._latestBlockNumber = blockNumber;
-                    resolve('synchronised');
+                    // Synchronised. Need to get the latest block number.
+                    that._web3.eth.getBlockNumber(function (err, blockNumber) {
+
+                        if (err) return reject(err);
+
+                        _this._latestBlockNumber = blockNumber;
+                        resolve('synchronised');
+                    });
                 });
             });
-        });
-    }
+        }
+    }, {
+        key: 'getBlock',
+        value: function getBlock(blockID) {
+            var _this2 = this;
 
-    getBlock(blockID) {
+            return new Promise(function (resolve, reject) {
 
-        return new Promise((resolve, reject) => {
+                _this2._web3.eth.getBlock(blockID, false, function (error, block) {
 
-            this._web3.eth.getBlock(blockID, false, (error, block) => {
+                    if (error) return reject(error);
 
-                if (error) return reject(error);
-
-                resolve(block);
+                    resolve(block);
+                });
             });
-        });
-    }
-
-    getLatestBlocks(blocksToRetrieve = 9) {
-
-        if (typeof this._syncing === 'undefined') {
-            throw new Error('Must call system state to get latest blocks');
         }
+    }, {
+        key: 'getLatestBlocks',
+        value: function getLatestBlocks() {
+            var blocksToRetrieve = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 9;
 
-        let promises = [];
 
-        for (let i = this._latestBlockNumber - blocksToRetrieve; i <= this._latestBlockNumber; i++) {
-
-            promises.push(this.getBlock(i));
-        }
-
-        return new Promise((resolve, reject) => {
-
-            Promise.all(promises).then(latestBlocks => {
-
-                resolve(latestBlocks);
-            }).catch(error => {
-
-                reject(error);
-            });
-        });
-    }
-
-    setLatestBlocks(blocks) {
-
-        this._latestBlocks = blocks;
-    }
-
-    getBlockTimes(latestBlocks = null) {
-
-        if (latestBlocks) {
-            this._latestBlocks = latestBlocks;
-        }
-
-        if (!this._latestBlocks || !this._latestBlocks.length) {
-            throw new Error('Must retrieve latest blocks to determine block times');
-        }
-
-        let blockTimes = [];
-
-        // Get individual block times at the same time as we figure out the average
-        this._totalTime = this._latestBlocks.reduce((total, block, index) => {
-
-            let blockTime = 0;
-
-            if (index !== 0) {
-
-                blockTime = this._latestBlocks[index].timestamp - this._latestBlocks[index - 1].timestamp;
-                blockTimes.push(blockTime);
+            if (typeof this._syncing === 'undefined') {
+                throw new Error('Must call system state to get latest blocks');
             }
 
-            return total + blockTime;
-        }, 0);
+            var promises = [];
 
-        this._averageTime = this._totalTime / this._latestBlocks.length;
+            for (var i = this._latestBlockNumber - blocksToRetrieve; i <= this._latestBlockNumber; i++) {
 
-        return {
-            blockTimes: blockTimes,
-            average: this._averageTime
-        };
-    }
+                promises.push(this.getBlock(i));
+            }
 
-    getAverageDifficulty(latestBlocks = null) {
+            return new Promise(function (resolve, reject) {
 
-        if (latestBlocks) {
-            this._latestBlocks = latestBlocks.filter(block => block && block.difficulty);
-        }
+                Promise.all(promises).then(function (latestBlocks) {
 
-        if (!this._latestBlocks || !this._latestBlocks.length) {
-            throw new Error('Must retrieve latest blocks to determine difficulty');
-        }
+                    resolve(latestBlocks);
+                }).catch(function (error) {
 
-        this._difficultySum = this._latestBlocks.reduce((total, block) => {
-
-            return total + parseInt(block.difficulty.toString());
-        }, 0);
-
-        this._averageDifficulty = this._difficultySum / this._latestBlocks.length;
-        return this._averageDifficulty;
-    }
-
-    getPeerCount() {
-
-        return new Promise((resolve, reject) => {
-
-            this._web3.net.getPeerCount((error, peerCount) => {
-
-                if (error) return reject(error);
-
-                resolve(peerCount);
+                    reject(error);
+                });
             });
-        });
-    }
-
-    getSync() {
-
-        return this._web3.eth.syncing;
-    }
-
-    getGasPrice() {
-
-        return new Promise((resolve, reject) => {
-
-            this._web3.eth.getGasPrice((error, gasPrice) => {
-
-                if (error) return reject(error);
-
-                // Price in gwei
-                resolve(parseInt(gasPrice.toString()) / 1000000000);
-            });
-        });
-    }
-
-    getHashRate() {
-
-        if (!this._difficultySum || !this._totalTime) {
-            throw new Error('Need difficulty and block time to calculate hashrate');
         }
+    }, {
+        key: 'setLatestBlocks',
+        value: function setLatestBlocks(blocks) {
 
-        return this._difficultySum / this._totalTime;
-    }
+            this._latestBlocks = blocks;
+        }
+    }, {
+        key: 'getBlockTimes',
+        value: function getBlockTimes() {
+            var _this3 = this;
 
-}
+            var latestBlocks = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+
+
+            if (latestBlocks) {
+                this._latestBlocks = latestBlocks;
+            }
+
+            if (!this._latestBlocks || !this._latestBlocks.length) {
+                throw new Error('Must retrieve latest blocks to determine block times');
+            }
+
+            var blockTimes = [];
+
+            // Get individual block times at the same time as we figure out the average
+            this._totalTime = this._latestBlocks.reduce(function (total, block, index) {
+
+                var blockTime = 0;
+
+                if (index !== 0) {
+
+                    blockTime = _this3._latestBlocks[index].timestamp - _this3._latestBlocks[index - 1].timestamp;
+                    blockTimes.push(blockTime);
+                }
+
+                return total + blockTime;
+            }, 0);
+
+            this._averageTime = this._totalTime / this._latestBlocks.length;
+
+            return {
+                blockTimes: blockTimes,
+                average: this._averageTime
+            };
+        }
+    }, {
+        key: 'getAverageDifficulty',
+        value: function getAverageDifficulty() {
+            var latestBlocks = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+
+
+            if (latestBlocks) {
+                this._latestBlocks = latestBlocks.filter(function (block) {
+                    return block && block.difficulty;
+                });
+            }
+
+            if (!this._latestBlocks || !this._latestBlocks.length) {
+                throw new Error('Must retrieve latest blocks to determine difficulty');
+            }
+
+            this._difficultySum = this._latestBlocks.reduce(function (total, block) {
+
+                return total + parseInt(block.difficulty.toString());
+            }, 0);
+
+            this._averageDifficulty = this._difficultySum / this._latestBlocks.length;
+            return this._averageDifficulty;
+        }
+    }, {
+        key: 'getPeerCount',
+        value: function getPeerCount() {
+            var _this4 = this;
+
+            return new Promise(function (resolve, reject) {
+
+                _this4._web3.net.getPeerCount(function (error, peerCount) {
+
+                    if (error) return reject(error);
+
+                    resolve(peerCount);
+                });
+            });
+        }
+    }, {
+        key: 'getSync',
+        value: function getSync() {
+
+            return this._web3.eth.syncing;
+        }
+    }, {
+        key: 'getGasPrice',
+        value: function getGasPrice() {
+            var _this5 = this;
+
+            return new Promise(function (resolve, reject) {
+
+                _this5._web3.eth.getGasPrice(function (error, gasPrice) {
+
+                    if (error) return reject(error);
+
+                    // Price in gwei
+                    resolve(parseInt(gasPrice.toString()) / 1000000000);
+                });
+            });
+        }
+    }, {
+        key: 'getHashRate',
+        value: function getHashRate() {
+
+            if (!this._difficultySum || !this._totalTime) {
+                throw new Error('Need difficulty and block time to calculate hashrate');
+            }
+
+            return this._difficultySum / this._totalTime;
+        }
+    }]);
+
+    return MixSystemStats;
+}();
+
+exports.default = MixSystemStats;
