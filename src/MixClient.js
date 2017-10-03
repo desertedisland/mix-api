@@ -71,8 +71,49 @@ export default class MixClient {
             throw new Error('Not connected to network');
         }
 
+        // Instantiate libraries
         this._systemStats = new MixSystemStats(this._web3);
         this._mixSearch = new MixSearch(this._web3);
+
+    }
+
+    /**
+     * Determine which blockchain the client is connected to by:
+     *  - Getting the genesis block hash and matching it to a known list of blockchains
+     *  - Look further up the chain to differentiate Ethereum and Ethereum classic
+     *
+     * @returns {Promise}
+     */
+
+    getBlockchainName(){
+
+        const blockchainHashes = {
+            '0x4fa57903dad05875ddf78030c16b5da886f7d81714cf66946a4c02566dbb2af5' : 'Mix blockchain',
+            '0x87b2bc3f12e3ded808c6d4b9b528381fa2a7e95ff2368ba93191a9495daa7f50' : 'Ethereum',
+            '0xab7668dfd3bedcf9da505d69306e8fd12ad78116429cf8880a9942c6f0605b60' : 'Ethereum Classic'
+        };
+
+        return new Promise(
+            (resolve, reject)=>{
+
+                // The Ethereum hard fork was at block 1920000. Therefore the block at 1920001 will have a different hash
+                // depending on whether it is from the Ethereum or Ethereum classic blockchain.
+                this.getBlock(1920001).then(
+                    (block)=>{
+
+                        if(typeof blockchainHashes[block.hash] === 'undefined'){
+
+                            return resolve('Unknown blockchain');
+
+                        }
+
+                        resolve(blockchainHashes[block.hash]);
+
+                    }
+                );
+
+            }
+        );
 
     }
 

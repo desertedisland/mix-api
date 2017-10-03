@@ -90,17 +90,53 @@ var MixClient = function () {
             throw new Error('Not connected to network');
         }
 
+        // Instantiate libraries
         this._systemStats = new _MixSystemStats2.default(this._web3);
         this._mixSearch = new _MixSearch2.default(this._web3);
     }
 
     /**
-     * Determine if the client is connected to an Ethereum provider
+     * Determine which blockchain the client is connected to by:
+     *  - Getting the genesis block hash and matching it to a known list of blockchains
+     *  - Look further up the chain to differentiate Ethereum and Ethereum classic
      *
-     * @returns {Boolean}
+     * @returns {Promise}
      */
 
     _createClass(MixClient, [{
+        key: 'getBlockchainName',
+        value: function getBlockchainName() {
+            var _this = this;
+
+            var blockchainHashes = {
+                '0x4fa57903dad05875ddf78030c16b5da886f7d81714cf66946a4c02566dbb2af5': 'Mix blockchain',
+                '0x87b2bc3f12e3ded808c6d4b9b528381fa2a7e95ff2368ba93191a9495daa7f50': 'Ethereum',
+                '0xab7668dfd3bedcf9da505d69306e8fd12ad78116429cf8880a9942c6f0605b60': 'Ethereum Classic'
+            };
+
+            return new Promise(function (resolve, reject) {
+
+                // The Ethereum hard fork was at block 1920000. Therefore the block at 1920001 will have a different hash
+                // depending on whether it is from the Ethereum or Ethereum classic blockchain.
+                _this.getBlock(1920001).then(function (block) {
+
+                    if (typeof blockchainHashes[block.hash] === 'undefined') {
+
+                        return resolve('Unknown blockchain');
+                    }
+
+                    resolve(blockchainHashes[block.hash]);
+                });
+            });
+        }
+
+        /**
+         * Determine if the client is connected to an Ethereum provider
+         *
+         * @returns {Boolean}
+         */
+
+    }, {
         key: 'isConnected',
         value: function isConnected() {
 
@@ -180,7 +216,7 @@ var MixClient = function () {
     }, {
         key: 'getSystemStats',
         value: function getSystemStats() {
-            var _this = this;
+            var _this2 = this;
 
             var latestBlocks = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
 
@@ -190,14 +226,14 @@ var MixClient = function () {
 
                 var stats = {};
 
-                _this._systemStats.getState().then(function (state) {
+                _this2._systemStats.getState().then(function (state) {
 
                     stats.state = state;
 
-                    var promises = [_this._systemStats.getPeerCount(), _this._systemStats.getGasPrice()];
+                    var promises = [_this2._systemStats.getPeerCount(), _this2._systemStats.getGasPrice()];
 
                     if (!latestBlocks) {
-                        promises.push(_this._systemStats.getLatestBlocks());
+                        promises.push(_this2._systemStats.getLatestBlocks());
                     }
 
                     Promise.all(promises).then(function (results) {
@@ -207,9 +243,9 @@ var MixClient = function () {
 
                         stats.latestBlocks = latestBlocks || results[2];
 
-                        stats.difficulty = _this._systemStats.getAverageDifficulty(stats.latestBlocks);
-                        stats.blockTimes = _this._systemStats.getBlockTimes(stats.latestBlocks);
-                        stats.hashRate = _this._systemStats.getHashRate();
+                        stats.difficulty = _this2._systemStats.getAverageDifficulty(stats.latestBlocks);
+                        stats.blockTimes = _this2._systemStats.getBlockTimes(stats.latestBlocks);
+                        stats.hashRate = _this2._systemStats.getHashRate();
 
                         resolve(stats);
                     }).catch(function (error) {
@@ -247,13 +283,13 @@ var MixClient = function () {
     }, {
         key: 'getBlocks',
         value: function getBlocks() {
-            var _this2 = this;
+            var _this3 = this;
 
             return new Promise(function (resolve, reject) {
 
-                _this2._systemStats.getState().then(function () {
+                _this3._systemStats.getState().then(function () {
 
-                    _this2._systemStats.getLatestBlocks().then(function (latestBlocks) {
+                    _this3._systemStats.getLatestBlocks().then(function (latestBlocks) {
 
                         resolve(latestBlocks);
                     });
