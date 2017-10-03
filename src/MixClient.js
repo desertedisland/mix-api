@@ -88,7 +88,7 @@ export default class MixClient {
     getBlockchainName(){
 
         const blockchainHashes = {
-            '0x4fa57903dad05875ddf78030c16b5da886f7d81714cf66946a4c02566dbb2af5' : 'Mix blockchain',
+            '0x4fa57903dad05875ddf78030c16b5da886f7d81714cf66946a4c02566dbb2af5' : 'Mix',
             '0x87b2bc3f12e3ded808c6d4b9b528381fa2a7e95ff2368ba93191a9495daa7f50' : 'Ethereum',
             '0xab7668dfd3bedcf9da505d69306e8fd12ad78116429cf8880a9942c6f0605b60' : 'Ethereum Classic'
         };
