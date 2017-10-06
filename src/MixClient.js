@@ -1,6 +1,6 @@
 // Core library for interactions with Ethereum blockchains
 
-import MixHTTPConnector from './MixConnector.js';
+import MixConnector from './MixConnector.js';
 import MixSystemStats from './MixSystemStats.js';
 import MixSearch from './MixSearch.js';
 
@@ -14,7 +14,7 @@ import MixSearch from './MixSearch.js';
  * @class
  *
  */
-export default class MixClient extends MixHTTPConnector{
+export default class MixClient extends MixConnector{
 
     /**
      * Connect to a network via:
@@ -36,46 +36,19 @@ export default class MixClient extends MixHTTPConnector{
 
         super();
 
-        // If a web3 object has been supplied as a param, use that over other methods.
-        this._web3 = null;
+        try{
 
-        // First see if a node URI is supplied by param
-        const nodeUri = nodeURI || null;
+            this.blockchainConnect(nodeURI, web3Object);
 
-        // Next see if a node URI has been set in localStorage. (localStorage will be undefined in tests)
-        if(!nodeURI && typeof localStorage !== 'undefined' ){
+        }catch(err){
 
-            nodeURI = localStorage.getItem('mix-node-uri');
-
-        }
-
-        // If web3Object has been supplied, that takes precedence over everything else.
-        if(web3Object){
-            this._web3 = web3Object;
-        }
-
-        // If nodeURI has been supplied, attempt to connect with that.
-        if (nodeURI && !this._web3) {
-
-            this._web3 = this.connect(nodeURI);
-
-        }
-
-        // No other option specified. Use metamask.
-        if(!this._web3 && (typeof web3 !== 'undefined')){
-
-            this._web3 = web3;
-
-        }
-
-        // Test connection
-        if(!this._web3 || !this._web3.isConnected()){
-            throw new Error('Not connected to network');
+            console.error(err);
+            return;
         }
 
         // Instantiate libraries
-        this._systemStats = new MixSystemStats(this._web3);
-        this._mixSearch = new MixSearch(this._web3);
+        this._systemStats = new MixSystemStats(this.web3);
+        this._mixSearch = new MixSearch(this.web3);
 
     }
 
@@ -120,19 +93,6 @@ export default class MixClient extends MixHTTPConnector{
     }
 
     /**
-     * Determine if the client is connected to an Ethereum provider
-     *
-     * @returns {Boolean}
-     */
-
-    isConnected(){
-
-        return this._web3.isConnected();
-
-    }
-
-
-    /**
      * Watch the network for new blocks
      *
      * @param {function} callback
@@ -141,7 +101,7 @@ export default class MixClient extends MixHTTPConnector{
      */
     watchNetwork(callback, errorCallback){
 
-        const filter = this._web3.eth.filter('latest');
+        const filter = this.web3.eth.filter('latest');
 
         filter.watch(function(error, result){
 

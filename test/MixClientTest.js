@@ -24,7 +24,7 @@ describe('Mix API',
         it('Should connect to a blockchain',
             function(){
 
-                mixClient = new MixClient('', web3);
+                mixClient = new MixClient(null, web3);
                 expect(mixClient.isConnected()).to.equal(true);
 
             }
