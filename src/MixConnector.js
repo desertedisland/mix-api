@@ -64,6 +64,7 @@ export default class MixConnector extends MixConnectorBase{
             throw new Error('Not connected to network');
         }
 
+        return this.web3;
 
     }
 
@@ -80,6 +81,8 @@ export default class MixConnector extends MixConnectorBase{
             console.error(err.message);
 
         }
+
+        return this.web3;
 
     }
 
