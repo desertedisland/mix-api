@@ -50,7 +50,7 @@ export default class MixConnector extends MixConnectorBase{
         // If nodeURI has been supplied, attempt to connect with that.
         if (uri && !this.web3) {
 
-            this.web3 = this.httpConnect(nodeURI);
+            this.httpConnect(nodeURI);
 
         }
 
@@ -59,7 +59,7 @@ export default class MixConnector extends MixConnectorBase{
 
             this.web3 = web3;
 
-        }
+        }      
 
         // Test connection
         if(!this.web3 || !this.isConnected()){
@@ -73,12 +73,11 @@ export default class MixConnector extends MixConnectorBase{
 
         try{
 
-            return new Web3(new Web3.providers.HttpProvider(nodeURI));
+            this.web3 = new Web3(new Web3.providers.HttpProvider(nodeURI));
 
         }catch(err){
 
             console.error(err.message);
-            return null;
 
         }
 
