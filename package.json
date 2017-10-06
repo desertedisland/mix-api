@@ -4,27 +4,22 @@
   "description": "Mix api is a wrapper of the web3 api for high level interaction with Ethereum based blockchains",
   "main": "index.js",
   "scripts": {
-    "test": "mocha test",
-    "babel": "babel src --out-dir dist",
-    "babel-watch": "babel --watch src --out-dir dist"
+    "test": "mocha --compilers js:babel-core/register test"
   },
   "babel": {
-    "presets": [
-      "env"
-    ]
+    "presets": ["env"]
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/mix-blockchain/mix-api.git"
   },
   "author": "James Drummond <jdrummond@link-blockchain.org>",
-  "license": "MIT",
+  "license": "GPL-3",
   "bugs": {
     "url": "https://github.com/link-blockchain/mix-api/issues"
   },
   "homepage": "https://github.com/link-blockchain/mix-api#readme",
   "devDependencies": {
-    "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
     "babel-preset-env": "^1.6.0",
     "chai": "^4.1.2",
