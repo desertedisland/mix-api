@@ -14,7 +14,7 @@ import MixSearch from './MixSearch.js';
  * @class
  *
  */
-export default class MixClient {
+export default class MixClient extends MixHTTPConnector{
 
     /**
      * Connect to a network via:
@@ -33,6 +33,8 @@ export default class MixClient {
      *
      */
     constructor(nodeURI = null, web3Object = null) {
+
+        super();
 
         // If a web3 object has been supplied as a param, use that over other methods.
         this._web3 = null;
@@ -55,7 +57,7 @@ export default class MixClient {
         // If nodeURI has been supplied, attempt to connect with that.
         if (nodeURI && !this._web3) {
 
-            this._web3 = MixHTTPConnector.connect(nodeURI);
+            this._web3 = this.connect(nodeURI);
 
         }
 

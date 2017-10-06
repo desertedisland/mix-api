@@ -14,7 +14,7 @@ class MixConnectorBase{
             throw new TypeError("Cannot construct Abstract instances directly");
         }
 
-        if (this.connect === 'undefined') {
+        if (this.httpConnect === 'undefined') {
             throw new TypeError("Connect method must be implemented");
         }
 
@@ -27,7 +27,7 @@ export default class MixHTTPConnector extends MixConnectorBase{
         super();
     }
 
-    static connect(nodeURI){
+    httpConnect(nodeURI){
 
         try{
 
