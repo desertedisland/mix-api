@@ -3,8 +3,6 @@
 // Currently the connection is to a node specified by IP - connection methods will be added in the future
 // hence the abstract base class.
 
-const web3 = require('web3');
-
 // Abstract base class to allow for different connection methods
 class MixConnectorBase{
 
@@ -50,7 +48,7 @@ export default class MixConnector extends MixConnectorBase{
         // If nodeURI has been supplied, attempt to connect with that.
         if (uri && !this.web3) {
 
-            this.httpConnect(nodeURI);
+            this.httpConnect(uri);
 
         }
 
@@ -59,10 +57,10 @@ export default class MixConnector extends MixConnectorBase{
 
             this.web3 = web3;
 
-        }      
+        }
 
         // Test connection
-        if(!this.web3 || !this.isConnected()){
+        if(!this.web3 || !this.web3.isConnected()){
             throw new Error('Not connected to network');
         }
 
@@ -71,6 +69,8 @@ export default class MixConnector extends MixConnectorBase{
 
     httpConnect(nodeURI){
 
+        const Web3 = require('web3');
+        
         try{
 
             this.web3 = new Web3(new Web3.providers.HttpProvider(nodeURI));
