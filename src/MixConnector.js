@@ -70,7 +70,7 @@ export default class MixConnector extends MixConnectorBase{
     httpConnect(nodeURI){
 
         const Web3 = require('web3');
-        
+
         try{
 
             this.web3 = new Web3(new Web3.providers.HttpProvider(nodeURI));
