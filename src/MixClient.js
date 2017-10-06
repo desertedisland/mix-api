@@ -78,16 +78,16 @@ export default class MixClient {
     }
 
     /**
-     * Determine which blockchain the client is connected to by:
-     *  - Getting the genesis block hash and matching it to a known list of blockchains
-     *  - Look further up the chain to differentiate Ethereum and Ethereum classic
+     * Determine which blockchain the client is connected to by matching the hash
+     * of block 192001 from the connected blockchain to known blockchains
      *
      * @returns {Promise}
      */
 
     getBlockchainName(){
 
-        const blockchainHashes = {
+        const IDENTIFYING_BLOCK = 1920001,
+            blockchainHashes = {
             '0x4fa57903dad05875ddf78030c16b5da886f7d81714cf66946a4c02566dbb2af5' : 'Mix',
             '0x87b2bc3f12e3ded808c6d4b9b528381fa2a7e95ff2368ba93191a9495daa7f50' : 'Ethereum',
             '0xab7668dfd3bedcf9da505d69306e8fd12ad78116429cf8880a9942c6f0605b60' : 'Ethereum Classic'
@@ -98,7 +98,7 @@ export default class MixClient {
 
                 // The Ethereum hard fork was at block 1920000. Therefore the block at 1920001 will have a different hash
                 // depending on whether it is from the Ethereum or Ethereum classic blockchain.
-                this.getBlock(1920001).then(
+                this.getBlock(IDENTIFYING_BLOCK).then(
                     (block)=>{
 
                         if(typeof blockchainHashes[block.hash] === 'undefined'){
