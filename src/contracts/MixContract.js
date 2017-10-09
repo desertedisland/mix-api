@@ -31,22 +31,6 @@ class MixContractBase extends MixConnector{
 
 export default class MixContract extends MixContractBase{
 
-    /**
-     * Connect to a network via:
-     *  - web3 object supplied as param
-     *  - Explicit URI supplied as param
-     *  - Explicit URI stored in localstorage.
-     *  - Metamask (https://metamask.io/)
-     *
-     * Explicit URI overrides Metamask
-     *
-     * @constructor
-     * @param {String}[nodeURI = null] nodeURI
-     * @param {Object}[web3 = null] web3
-     *
-     * @throws{Error} if connection is not made
-     *
-     */
     constructor(nodeURI = null, web3Object = null) {
 
         super();

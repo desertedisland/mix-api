@@ -9,5 +9,6 @@ var client = require('./src/MixClient'),
 
 module.exports = {
     MixClient : client.default,
-    MixConnector : connector.default
+    MixConnector : connector.default,
+    MixContracts : contracts
 };
