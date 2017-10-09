@@ -4,11 +4,11 @@
 var client = require('./src/MixClient'),
     connector = require('./src/MixConnector'),
     contracts = {
-        MixinRegistryContract : require('./src/contracts/MixinRegistryContract')
+        MixinRegistryContract : require('./src/contracts/MixinRegistryContract').default
     };
 
 module.exports = {
     MixClient : client.default,
     MixConnector : connector.default,
-    MixContracts : contracts
+    mixContracts : contracts
 };
