@@ -50,15 +50,6 @@ export default class MixClient extends MixConnector{
         this._systemStats = new MixSystemStats(this.web3);
         this._mixSearch = new MixSearch(this.web3);
 
-        // Get blockchain name
-        this.getBlockchainName().then(
-            (chainName)=>{
-
-                this.chainName = chainName;
-
-            }
-        )
-
     }
 
     /**
