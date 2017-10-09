@@ -50,6 +50,15 @@ export default class MixClient extends MixConnector{
         this._systemStats = new MixSystemStats(this.web3);
         this._mixSearch = new MixSearch(this.web3);
 
+        // Get blockchain name
+        this.getBlockchainName().then(
+            (chainName)=>{
+
+                this.chainName = chainName;
+
+            }
+        )
+
     }
 
     /**
@@ -63,7 +72,7 @@ export default class MixClient extends MixConnector{
 
         const IDENTIFYING_BLOCK = 1920001,
             blockchainHashes = {
-            '0x4fa57903dad05875ddf78030c16b5da886f7d81714cf66946a4c02566dbb2af5' : 'Mix',
+            '0x7644ba8795e260e7c4ad9f7e72aa1d0856f914f1a4847fb903aa504da29f9d22' : 'Mix',
             '0x87b2bc3f12e3ded808c6d4b9b528381fa2a7e95ff2368ba93191a9495daa7f50' : 'Ethereum',
             '0xab7668dfd3bedcf9da505d69306e8fd12ad78116429cf8880a9942c6f0605b60' : 'Ethereum Classic'
         };
@@ -76,13 +85,21 @@ export default class MixClient extends MixConnector{
                 this.getBlock(IDENTIFYING_BLOCK).then(
                     (block)=>{
 
-                        if(typeof blockchainHashes[block.hash] === 'undefined'){
+                        if(!block) return this.getBlock(1);
+
+                        resolve(blockchainHashes[block.hash]);
+
+                    }
+                ).then(
+                    (firstBlock)=>{
+
+                        if(!firstBlock || !blockchainHashes[firstBlock.hash]){
 
                             return resolve('Unknown blockchain');
 
                         }
 
-                        resolve(blockchainHashes[block.hash]);
+                        resolve(blockchainHashes[firstBlock.hash]);
 
                     }
                 );

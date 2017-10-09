@@ -1,4 +1,6 @@
 
+// Need to use commonjs imports for NPM
+
 var client = require('./src/MixClient'),
     connector = require('./src/MixConnector');
 
