@@ -21,13 +21,27 @@ export default class MixinRegistryContract extends MixContract{
     contractConnect(){
 
         const contract = this.web3.eth.contract(MixinRegistryABI);
-
         this.mixinRegistryContract = contract.at(MixinRegistryAddress);
 
     }
 
-    addMixin(){
+    addMixin({ parentId, uri, description }){
 
+        return new Promise(
+            (resolve, reject)=>{
+
+                this.mixinRegistryContract.addMixin(parentId, uri, description).send().then(
+                    (error, result)=>{
+
+                        if(error) return reject(error);
+
+                        resolve(result);
+
+                    }
+                )
+
+            }
+        )
 
 
     }
