@@ -23,6 +23,28 @@ export default class MixinRegistryContract extends MixContract{
         const contract = this.web3.eth.contract(MixinRegistryABI);
         this.mixinRegistryContract = contract.at(MixinRegistryAddress);
 
+        // Create event watcher
+        this.contractEvents = this.mixinRegistryContract.allEvents();
+    }
+
+    contractWatch(callBack){
+
+        this.contractEvents.watch(
+            (error, log)=>{
+
+                if(error) return console.error(error);
+
+
+                console.log(log);
+
+            }
+        );
+    }
+
+    contractStopWatching(){
+
+        this.contractEvents.stopWatching();
+
     }
 
     addMixin({ parentId, uri, description }){
