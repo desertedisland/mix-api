@@ -30,14 +30,12 @@ export default class MixinRegistryContract extends MixContract{
         return new Promise(
             (resolve, reject)=>{
 
-                this.mixinRegistryContract.addMixin.sendTransaction(parentId, uri, description, {from : this.web3.eth.accounts[0], gas : 30000 },
-
+                this.mixinRegistryContract.addMixin(parentId, uri, description,
                     (error, response)=>{
 
                         if(error) return reject(error.message);
 
                         resolve(response);
-                        console.log(response);
                     }
 
                 )
@@ -55,7 +53,7 @@ export default class MixinRegistryContract extends MixContract{
 
                 if(error) return console.error(error.message);
 
-                console.log(response);
+                console.log(response.toString());
 
             }
         );
