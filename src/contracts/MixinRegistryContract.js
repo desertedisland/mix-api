@@ -30,14 +30,16 @@ export default class MixinRegistryContract extends MixContract{
         return new Promise(
             (resolve, reject)=>{
 
-                this.mixinRegistryContract.addMixin(parentId, uri, description).send().then(
-                    (error, result)=>{
+                this.mixinRegistryContract.addMixin.sendTransaction(parentId, uri, description, {from : this.web3.eth.accounts[0], gas : 30000 },
 
-                        if(error) return reject(error);
+                    (error, response)=>{
 
-                        resolve(result);
+                        if(error) return reject(error.message);
 
+                        resolve(response);
+                        console.log(response);
                     }
+
                 )
 
             }
@@ -47,6 +49,16 @@ export default class MixinRegistryContract extends MixContract{
     }
 
     getMixinCount(){
+
+        const count = this.mixinRegistryContract.getCount(
+            (error, response)=>{
+
+                if(error) return console.error(error.message);
+
+                console.log(response);
+
+            }
+        );
 
     }
 
