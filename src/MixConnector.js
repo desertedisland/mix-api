@@ -60,7 +60,8 @@ export default class MixConnector extends MixConnectorBase{
         }
 
         // No connection. Connect to public Ethereum node
-        this.httpConnect('https://api.myetherapi.com/eth');
+        if(!this.web3)
+            this.httpConnect('https://api.myetherapi.com/eth');
 
         // Test connection
         if(!this.web3 || !this.web3.isConnected()){
