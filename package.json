@@ -4,7 +4,8 @@
   "description": "Mix api is a wrapper of the web3 api for high level interaction with Ethereum based blockchains",
   "main": "index.js",
   "scripts": {
-    "test": "mocha --compilers js:babel-core/register test"
+    "test": "mocha --compilers js:babel-core/register test",
+    "babel" : "babel --presets env -d dist/ src/"
   },
   "babel": {
     "presets": [
@@ -22,6 +23,7 @@
   },
   "homepage": "https://github.com/link-blockchain/mix-api#readme",
   "devDependencies": {
+    "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
     "babel-preset-env": "^1.6.0",
     "chai": "^4.1.2",
@@ -29,6 +31,7 @@
     "web3-mock": "github:link-blockchain/web3-mock"
   },
   "dependencies": {
+    "babel": "^6.23.0",
     "moment": "^2.18.1",
     "web3": "^0.19.0"
   }

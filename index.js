@@ -1,10 +1,10 @@
 
 // Need to use commonjs imports for NPM
 
-var client = require('./src/MixClient'),
-    connector = require('./src/MixConnector'),
+var client = require('./dist/MixClient'),
+    connector = require('./dist/MixConnector'),
     contracts = {
-        MixinRegistryContract : require('./src/contracts/MixinRegistryContract').default
+        MixinRegistryContract : require('./dist/contracts/MixinRegistryContract').default
     };
 
 module.exports = {
