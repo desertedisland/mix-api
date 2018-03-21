@@ -98,7 +98,7 @@ export default class MixSystemStats{
                         latestBlocks.sort(
                             (blocka, blockb)=>{
 
-                                if(blocka.timestamp < blockb.timestamp)
+                                if(blocka.timestamp > blockb.timestamp)
                                     return 1;
 
                                 return -1;
