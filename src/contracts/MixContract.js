@@ -12,7 +12,7 @@ export default class MixContract{
 
     constructor() {
 
-        if (new.target === 'MixConnectorBase') {
+        if (this.constructor === 'MixConnectorBase') {
             throw new TypeError("Cannot construct Abstract instances directly");
         }
 
