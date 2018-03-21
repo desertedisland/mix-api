@@ -13,9 +13,9 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/mix-blockchain/mix-api.git"
+    "url": "git+https://github.com/desertedisland/mix-api.git"
   },
-  "author": "James Drummond <jdrummond@link-blockchain.org>",
+  "author": "James Drummond <james@smoothbook.co>",
   "license": "GPL-3.0",
   "bugs": {
     "url": "https://github.com/link-blockchain/mix-api/issues"

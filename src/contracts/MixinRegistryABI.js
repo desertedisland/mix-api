@@ -133,4 +133,4 @@ const MixinRegistryAddress = "0x99be57fca49270b69306cdbe89df416d769dbd06";
 
 const TestMixinRegistryAddress = '0x1eda349959248aa94f755bc4c7da9201a5336171';
 
-export{ MixinRegistryABI, TestMixinRegistryAddress };
+export{ MixinRegistryABI, MixinRegistryAddress, TestMixinRegistryAddress };
