@@ -94,6 +94,18 @@ export default class MixSystemStats{
                 Promise.all(promises).then(
                     (latestBlocks)=>{
 
+                        // Blocks are returned asynchronously. Order them by timestamp
+                        latestBlocks.sort(
+                            (blocka, blockb)=>{
+
+                                if(blocka.timestamp < blockb.timestamp)
+                                    return 1;
+
+                                return -1;
+
+                            }
+                        );
+
                         resolve(latestBlocks);
 
                     }
