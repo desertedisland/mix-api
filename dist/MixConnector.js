@@ -20,7 +20,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 var MixConnectorBase = function MixConnectorBase() {
         _classCallCheck(this, MixConnectorBase);
 
-        if (new.target === 'MixConnectorBase') {
+        if (this.constructor === 'MixConnectorBase') {
                 throw new TypeError("Cannot construct Abstract instances directly");
         }
 
